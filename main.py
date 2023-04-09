@@ -8,8 +8,8 @@
 """
 
 import re
-import tkinter.messagebox as mb
 import tkinter as tk
+import tkinter.messagebox as mb
 from tkinter import filedialog
 
 import nltk
@@ -28,7 +28,7 @@ class App(tk.Tk):
         self.label = tk.Label(text="Выберите что сделать с скоращенным текстом")
         self.save_button.grid(row=2, column=0, padx=10, pady=10)
         self.copy_button.grid(row=2, column=2, padx=10, pady=10)
-        self.label.grid(row=0, column=1,)
+        self.label.grid(row=0, column=1, )
 
     def click_save(self):
         path_to_save_directory = filedialog.askdirectory()
@@ -36,17 +36,16 @@ class App(tk.Tk):
             f.write(end_text)
         show_info_about('Ваш файл был сохранён в указанную папку')
 
-
     def click_copy(self):
         def write(name):
             pyperclip.copy(name)  # Копирует в буфер обмена информацию
             pyperclip.paste()
+
         write(end_text)
         show_info_about('текст успешно скопирован!')
 
 
-
-path_to_file = filedialog.  askopenfilename()
+path_to_file = filedialog.askopenfilename()
 
 
 def show_info_about(msg):
