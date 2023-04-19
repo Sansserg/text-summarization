@@ -44,8 +44,6 @@ class App(tk.Tk):
         write(end_text)
         show_info_about('текст успешно скопирован!')
 
-
-
 path_to_file = filedialog.askopenfilename()
 
 
