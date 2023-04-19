@@ -8,8 +8,8 @@
 """
 
 import re
-import tkinter as tk
 import tkinter.messagebox as mb
+import tkinter as tk
 from tkinter import filedialog
 
 import nltk
@@ -28,7 +28,7 @@ class App(tk.Tk):
         self.label = tk.Label(text="Выберите что сделать с скоращенным текстом")
         self.save_button.grid(row=2, column=0, padx=10, pady=10)
         self.copy_button.grid(row=2, column=2, padx=10, pady=10)
-        self.label.grid(row=0, column=1, )
+        self.label.grid(row=0, column=1,)
 
     def click_save(self):
         path_to_save_directory = filedialog.askdirectory()
@@ -36,13 +36,14 @@ class App(tk.Tk):
             f.write(end_text)
         show_info_about('Ваш файл был сохранён в указанную папку')
 
+
     def click_copy(self):
         def write(name):
             pyperclip.copy(name)  # Копирует в буфер обмена информацию
             pyperclip.paste()
-
         write(end_text)
         show_info_about('текст успешно скопирован!')
+
 
 
 path_to_file = filedialog.askopenfilename()
@@ -64,12 +65,15 @@ processed_article = re.sub(r'\s+', ' ', processed_article)
 all_sentences = nltk.sent_tokenize(processed_article)
 all_words = [nltk.word_tokenize(sent) for sent in all_sentences]
 
+
 # Removing stop words
 stop_words_eng = set(stopwords.words('english'))
 stop_words = set(stopwords.words('russian'))
 
 for i in range(len(all_words)):
     all_words[i] = [w for w in all_words[i] if w not in stop_words_eng]
+
+
 
 # Train Word2Vec model
 try:
@@ -86,10 +90,14 @@ for i in range(len(sentence_for_vect)):
     sentence_for_vect[i] = sentence_for_vect[i].strip()
 
 for j in range(len(sentence_for_vect)):
-    all_sentences_with_vector[sentence_for_vect[j]] = 0
-    for i in all_words[0]:
-        if i in word2vec.wv:
-            all_sentences_with_vector[sentence_for_vect[j]] += word2vec.wv.get_vector(i)
+    if sentence_for_vect[j] != "":
+        all_sentences_with_vector[sentence_for_vect[j]] = 0
+
+        for i in re.sub(r'\s+', ' ', sentence_for_vect[j].lower()).split():
+            if i in word2vec.wv:
+                all_sentences_with_vector[sentence_for_vect[j]] += word2vec.wv.get_vector(i)
+
+print(all_sentences_with_vector.keys())
 
 # Normalize the vectors
 for i in all_sentences_with_vector.keys():
