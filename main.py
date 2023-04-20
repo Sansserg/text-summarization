@@ -1,12 +1,3 @@
-"""
-Слова через дефис
-
-
-
-Что происходит там?
-
-"""
-
 import re
 import tkinter.messagebox as mb
 import tkinter as tk
@@ -32,10 +23,12 @@ class App(tk.Tk):
 
     def click_save(self):
         path_to_save_directory = filedialog.askdirectory()
-        with open(f"{path_to_save_directory}/Answer_text.txt", "w") as f:
-            f.write(end_text)
-        show_info_about('Ваш файл был сохранён в указанную папку')
-
+        try:
+            with open(f"{path_to_save_directory}/Answer_text.txt", "w") as f:
+                f.write(end_text)
+            show_info_about('Ваш файл был сохранён в указанную папку')
+        except:
+            show_info_about('Неудачная запись файла')
 
     def click_copy(self):
         def write(name):
@@ -95,7 +88,6 @@ for j in range(len(sentence_for_vect)):
             if i in word2vec.wv:
                 all_sentences_with_vector[sentence_for_vect[j]] += word2vec.wv.get_vector(i)
 
-print(all_sentences_with_vector.keys())
 
 # Normalize the vectors
 for i in all_sentences_with_vector.keys():
@@ -141,7 +133,7 @@ end_text = ""
 
 for j in past2:
     if j in text_sorted:
-        end_text += j + "\n"
+        end_text += j + ". "
 
 app = App()
 app.mainloop()
