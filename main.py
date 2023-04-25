@@ -37,15 +37,12 @@ class App(tk.Tk):
         write(end_text)
         show_info_about('текст успешно скопирован!')
 
-path_to_file = filedialog.askopenfilename()
-
-
 def show_info_about(msg):
     mb.showinfo("Информация", msg)
 
 
 # Read the file
-with open(path_to_file, "r") as f:
+with open(filedialog.askopenfilename(), "r") as f:
     article_text = f.read()
 
 # Cleaning the text
@@ -62,7 +59,8 @@ stop_words_eng = set(stopwords.words('english'))
 stop_words = set(stopwords.words('russian'))
 
 for i in range(len(all_words)):
-    all_words[i] = [w for w in all_words[i] if w not in stop_words_eng]
+    all_words[i] = [w for w in all_words[i]
+                        if w not in stop_words_eng]
 
 
 
@@ -84,9 +82,9 @@ for j in range(len(sentence_for_vect)):
     if sentence_for_vect[j] != "":
         all_sentences_with_vector[sentence_for_vect[j]] = 0
 
-        for i in re.sub(r'\s+', ' ', sentence_for_vect[j].lower()).split():
-            if i in word2vec.wv:
-                all_sentences_with_vector[sentence_for_vect[j]] += word2vec.wv.get_vector(i)
+        for word in re.sub(r'\s+', ' ', sentence_for_vect[j].lower()).split():
+            if word in word2vec.wv:
+                all_sentences_with_vector[sentence_for_vect[j]] += word2vec.wv.get_vector(word)
 
 
 # Normalize the vectors
